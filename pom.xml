@@ -14,7 +14,7 @@
 	</parent>
 	<groupId>works.wckd</groupId>
 	<artifactId>petClinic</artifactId>
-	<version>0.0.3</version>
+	<version>0.0.4-SNAPSHOT</version>
 	<name>petClinic</name>
 	<description>reimplementation of pet clinic spring project</description>
 
@@ -41,7 +41,7 @@
 
 	<scm>
 		<developerConnection>scm:git:https://github.com/Raj-1337/petClinic.git</developerConnection>
-	  <tag>petClinic-0.0.3</tag>
+	  <tag>HEAD</tag>
   </scm>
 
 </project>
