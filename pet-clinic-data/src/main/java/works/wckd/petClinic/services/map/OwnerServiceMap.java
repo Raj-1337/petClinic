@@ -3,11 +3,21 @@ package works.wckd.petClinic.services.map;
 import org.springframework.stereotype.Service;
 import works.wckd.petClinic.model.Owner;
 import works.wckd.petClinic.services.OwnerService;
+import works.wckd.petClinic.services.PetService;
+import works.wckd.petClinic.services.PetTypeService;
 
 import java.util.Set;
 
 @Service
 public class OwnerServiceMap extends AbstractMapService<Owner, Long> implements OwnerService {
+
+    private final PetService petService;
+    private final PetTypeService petTypeService;
+
+    public OwnerServiceMap(PetService petService, PetTypeService petTypeService) {
+        this.petService = petService;
+        this.petTypeService = petTypeService;
+    }
 
     @Override
     public Set<Owner> findAll() {
@@ -21,7 +31,25 @@ public class OwnerServiceMap extends AbstractMapService<Owner, Long> implements 
 
     @Override
     public Owner save(Owner object) {
-        return super.save(object);
+        if (object != null) {
+            if (object.getPets() != null) {
+                object.getPets().forEach(pet -> {
+                    if (pet.getPetType() != null) {
+                        if (pet.getPetType().getId() == null) {
+                            pet.setPetType(petTypeService.save(pet.getPetType()));
+                        }
+                    } else {
+                        throw new RuntimeException("Pet Type is required!");
+                    }
+
+                    if (pet.getId() == null) {
+                        pet.setId(petService.save(pet).getId());
+                    }
+                });
+            }
+            return super.save(object);
+        }
+        return null;
     }
 
     @Override
